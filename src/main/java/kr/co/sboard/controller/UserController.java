@@ -1,15 +1,12 @@
 package kr.co.sboard.controller;
 
-import kr.co.sboard.config.AppInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RequiredArgsConstructor
 @Controller
 public class UserController {
-    private AppInfo appInfo;
 
     @GetMapping("/user/info")
     public String info() {
