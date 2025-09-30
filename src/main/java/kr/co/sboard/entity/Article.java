@@ -17,6 +17,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ano;
+
     private String cate;
     private String title;
     private String content;
@@ -28,4 +29,12 @@ public class Article {
 
     @CreationTimestamp
     private LocalDateTime wdate;
+
+    // 추가필드
+    @Transient
+    private String nick;
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
 }
