@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -21,14 +22,16 @@ import java.util.List;
 @Repository
 public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
-    /*
-     반드시 이름을 ArticleRepositoryImpl 해야됨
-     ArticleRepositoryCustomImpl 로 하면 QueryDSL 생성 에러가 발생됨
+    /**
+     * 반드시 파일명을 ArticleRepositoryImpl로 해야함.
+     * 다른 이름으로 하면 QueryDSL 생성 에러가 발생됨.
      */
+
     private final JPAQueryFactory jpaQueryFactory;
 
     private QArticle qArticle = QArticle.article;
     private QUser qUser = QUser.user;
+
 
     @Override
     public Page<Tuple> selectArticleAllForList(PageRequestDTO pageRequestDTO, Pageable pageable) {
@@ -42,22 +45,16 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .orderBy(qArticle.ano.desc())
                 .fetch();
 
-        // 전체 게시물 갯수
-        Long total = jpaQueryFactory
-                .select(qArticle.count())
-                .from(qArticle)
-                .fetchOne();
-
+        // 전체 게시물 개수
+        long total = jpaQueryFactory.select(qArticle.count()).from(qArticle).fetchOne();
 
         return new PageImpl<Tuple>(tupleList, pageable, total);
     }
 
     public Page<Tuple> selectArticleAllForSearch(PageRequestDTO pageRequestDTO, Pageable pageable) {
 
-
         String searchType = pageRequestDTO.getSearchType();
         String keyword = pageRequestDTO.getKeyword();
-
 
         // 검색 타입에 따라 where 조건 표현식 생성(동적 쿼리)
         BooleanExpression expression = null;
@@ -80,10 +77,12 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .orderBy(qArticle.ano.desc())
                 .fetch();
 
-        // 전체 게시물 갯수
-        Long total = jpaQueryFactory
+        // 전체 게시물 개수
+        long total = jpaQueryFactory
                 .select(qArticle.count())
                 .from(qArticle)
+                .join(qUser)
+                .on(qArticle.writer.eq(qUser.usid))
                 .where(expression)
                 .fetchOne();
 

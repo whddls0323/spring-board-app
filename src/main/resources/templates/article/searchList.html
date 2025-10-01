@@ -43,7 +43,7 @@
                     <a th:if="${pageResponseDTO.next}" th:href="@{/article/search(pg=${pageResponseDTO.end + 1}, searchType=${pageResponseDTO.searchType}, keyword=${pageResponseDTO.keyword})}" class="next">다음</a>
                 </div>
 
-                <a href="./write.html" class="btn btnWrite">글쓰기</a>
+                <a th:href="@{/article/write}" class="btn btnWrite">글쓰기</a>
 
             </section>
         </main>

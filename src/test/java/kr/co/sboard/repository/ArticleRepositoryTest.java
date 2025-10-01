@@ -1,7 +1,9 @@
 package kr.co.sboard.repository;
 
 import com.querydsl.core.Tuple;
+import jakarta.transaction.Transactional;
 import kr.co.sboard.dto.PageRequestDTO;
+import kr.co.sboard.entity.Article;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class ArticleRepositoryTest {
@@ -24,6 +27,16 @@ class ArticleRepositoryTest {
         List<Tuple> tupleList = pageTuple.getContent();
 
         System.out.println(tupleList);
+    }
 
+    @Test
+    @Transactional
+    void test2(){
+        Optional<Article> optArticle = articleRepository.findById(3);
+
+        if(optArticle.isPresent()){
+            Article article = optArticle.get();
+            System.out.println(article);
+        }
     }
 }

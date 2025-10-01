@@ -5,11 +5,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ArticleDTO {
+
     private int ano;
 
     @Builder.Default
@@ -38,4 +41,6 @@ public class ArticleDTO {
 
     // 추가필드
     private String nick;
+
+    private List<FileDTO> fileList;
 }

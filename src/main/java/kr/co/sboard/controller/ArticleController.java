@@ -25,7 +25,9 @@ public class ArticleController {
 
     @GetMapping("/article/list")
     public String list(Model model, PageRequestDTO pageRequestDTO){
+
         PageResponseDTO pageResponseDTO = articleService.getArticleAll(pageRequestDTO);
+
         model.addAttribute(pageResponseDTO);
 
         return "article/list";
@@ -38,6 +40,7 @@ public class ArticleController {
 
     @GetMapping("/article/search")
     public String searchList(PageRequestDTO pageRequestDTO, Model model){
+
         log.info("pageRequestDTO = {}", pageRequestDTO);
 
         PageResponseDTO pageResponseDTO = articleService.getArticleAll(pageRequestDTO);
@@ -47,7 +50,12 @@ public class ArticleController {
     }
 
     @GetMapping("/article/view")
-    public String view(){
+    public String view(int ano, Model model){
+        log.info("ano = {}", ano);
+
+        ArticleDTO articleDTO = articleService.getArticle(ano);
+        model.addAttribute(articleDTO);
+
         return "article/view";
     }
 
@@ -72,6 +80,7 @@ public class ArticleController {
 
         // 파일 저장
         for(FileDTO fileDTO : fileDTOList){
+
             fileDTO.setAno(ano);
             fileService.save(fileDTO);
         }
